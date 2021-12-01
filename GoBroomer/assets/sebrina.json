@@ -1,0 +1,65 @@
+{
+  "frames": [
+    {
+      "filename": "sebrina-04",
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 13,
+        "h": 33
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 13,
+        "h": 33
+      },
+      "sourceSize": {
+        "w": 13,
+        "h": 33
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "sebrina-31",
+      "frame": {
+        "x": 0,
+        "y": 33,
+        "w": 14,
+        "h": 31
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 14,
+        "h": 31
+      },
+      "sourceSize": {
+        "w": 14,
+        "h": 31
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    }
+  ],
+  "meta": {
+    "app": "http://free-tex-packer.com",
+    "version": "0.6.7",
+    "image": "sebrina.png",
+    "format": "RGBA8888",
+    "size": {
+      "w": 14,
+      "h": 64
+    },
+    "scale": 1
+  }
+}

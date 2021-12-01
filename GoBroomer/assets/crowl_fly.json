@@ -1,0 +1,115 @@
+{
+  "frames": [
+    {
+      "filename": "crowl_fly-09",
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 33,
+        "h": 24
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 33,
+        "h": 24
+      },
+      "sourceSize": {
+        "w": 33,
+        "h": 24
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "crowl_fly-16",
+      "frame": {
+        "x": 33,
+        "y": 0,
+        "w": 33,
+        "h": 15
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 33,
+        "h": 15
+      },
+      "sourceSize": {
+        "w": 33,
+        "h": 15
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "crowl_fly-28",
+      "frame": {
+        "x": 66,
+        "y": 0,
+        "w": 33,
+        "h": 15
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 33,
+        "h": 15
+      },
+      "sourceSize": {
+        "w": 33,
+        "h": 15
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "crowl_fly-17",
+      "frame": {
+        "x": 99,
+        "y": 0,
+        "w": 33,
+        "h": 10
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 33,
+        "h": 10
+      },
+      "sourceSize": {
+        "w": 33,
+        "h": 10
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    }
+  ],
+  "meta": {
+    "app": "http://free-tex-packer.com",
+    "version": "0.6.7",
+    "image": "crowl_fly.png",
+    "format": "RGBA8888",
+    "size": {
+      "w": 132,
+      "h": 24
+    },
+    "scale": 1
+  }
+}
