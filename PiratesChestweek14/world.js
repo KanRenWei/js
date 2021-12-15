@@ -35,7 +35,7 @@ class world extends Phaser.Scene {
     //background_sound
     this.music = this.sound.add("BGM", {
       loop: true,
-    }).setVolume(0.3);this.music.play();
+    }).setVolume(0.1);this.music.play();
 
     //collectsound
         this.collectsound = this.sound.add("collect");
