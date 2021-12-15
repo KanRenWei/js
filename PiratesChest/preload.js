@@ -7,7 +7,15 @@ class preload extends Phaser.Scene {
     // Put global variable here
   }
 
-  preload() {}
+  preload() {
+    //collect sound
+    this.load.audio("collect","assets/chestmp3.mp3");
+
+    //background music
+    this.load.audio("BGM","assets/piratemusic.mp3");
+  }
+
+
 
   create() {
     console.log("*** preload scene");
@@ -25,16 +33,30 @@ class preload extends Phaser.Scene {
     // Check for spacebar or any key here
     var spaceDown = this.input.keyboard.addKey("SPACE");
 
+    // key1.on("down", function(){
+    //   let playerPos = {};
+    //   playerPos.x = 592;
+    //   playerPos.y = 1037;
+    //   playerPos.dir = "down";
+    //   this.scene.start("computerlab",{ playerPos : playerPos });
+    // },
+    // this
+    // );
+
     // On spacebar event, call the world scene
     spaceDown.on(
       "down",
       function () {
         console.log("Jump to world scene");
+        let playerPos = {};
+        playerPos.x = 371;
+        playerPos.y = 2468;
+        playerPos.dir = "down";
 
         this.scene.start(
-          "world",
+          "world",{ playerPos : playerPos }
           // Optional parameters
-          {}
+          // {}
         );
       },
       this

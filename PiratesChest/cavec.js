@@ -1,124 +1,234 @@
-class cave extends Phaser.Scene {
-    constructor() {
-      super({
-        key: "cavec",
-      });
-    }
-  //cave C
-    // incoming data from scene below
-    init(data) {}
-  
-    preload() {
-      // Step 1, load JSON
+class cavec extends Phaser.Scene {
+
+  constructor() {
+      super({ key: 'cavec' });
+      
+      // Put global variable here
+  }
+
+
+  init(data) {
+      // this.player = data.player
+      // this.inventory = data.inventory
+
+      this.playerPos = data.playerPos;
+  }
+
+  preload() {
+  //step 1 load Json
       this.load.tilemapTiledJSON("cavec","assets/cavec.json");
-  
-      // // Step 2 : Preload any images here, nickname, filename （这里放你的tileset PNG和你的character animation那些，反正就是图片那些）
-  
 
-      this.load.image("forest2","assets/forest2.png");
-      this.load.image("forest3","assets/forest3.png");
+  //load image
+  this.load.image("forest2","assets/forest2.png");
+  this.load.image("forest3","assets/forest3.png");
+
+  //  //npc / enemy
+   this.load.atlas( 'co', 'assets/co.png', 'assets/co.json');
+  //  this.load.atlas( 'item2', 'assets/item2.png', 'assets/item2.json');
+
+  }
+
+  create() {
+      console.log('*** cavec scene');
+
+      let map = this.make.tilemap({key: "cavec"});
+
+       //collectsound
+       this.collectsound = this.sound.add("collect");
+
+  // //collectsound
+  //     this.collectsound = this.sound.add("collect");
+
+      let forest2Tiles = map.addTilesetImage("forest2", "forest2");
+      let forest3Tiles = map.addTilesetImage("forest3", "forest3");
+
+      let tilesArray = [ forest2Tiles,forest3Tiles ]
+
+      this.groundlayer = map.createLayer("groundlayer",tilesArray, 0, 0);
+      this.walllayer = map.createLayer("walllayer",tilesArray, 0, 0);
+      this.decolayer = map.createLayer("decolayer",tilesArray, 0, 0);
+
+
+// //iterm animation
+this.anims.create({
+  key: 'co',
+  frames: [
+  { key: 'co', frame: "co-05"},
+  { key: 'co', frame: "co-03"},
+  { key: 'co', frame: "co-04"},
+  { key: 'co', frame: "co-02"},
+  { key: 'co', frame: "co-01"},
   
-  
-      this.load.atlas( 'left', 'assets/Pwl.png', 'assets/Pwl.json'); //load了png然后load你的j.son在后面
-      this.load.atlas( 'right', 'assets/Pwr.png', 'assets/Pwr.json');
-      this.load.atlas( 'up', 'assets/Pwb.png', 'assets/Pwb.json');
-      this.load.atlas( 'down', 'assets/Pwf.png', 'assets/Pwf.json');
+   ],
+  frameRate: 6,
+  repeat: -1
+  })       
+
+// this.anims.create({
+//       key: 'item2',
+//       frames: [
+//       { key: 'item2', frame: "item-06"},
+//       { key: 'item2', frame: "item-31"},
+      
+//        ],
+//       frameRate: 6,
+//       repeat: -1
+//       }) 
+
+
+  // this.physics.world.bounds.width = this.groundlayer.width; 
+  // this.physics.world.bounds.height = this.groundlayer.height;
+
+  // this.player = this.physics.add.sprite(400.1, 116.1, "down").setScale(0.30);
+
+  this.player = this.physics.add.sprite(
+    this.playerPos.x,
+    this.playerPos.y,
+    this.playerPos.dir
+).setScale(0.3)
+
+  //enable debug
+  window.player = this.player;
+
+
+  this.player.setCollideWorldBounds(true); // don't go out of the this.map 
+
+  // // create the arrow keys
+   this.cursors = this.input.keyboard.createCursorKeys();
+
+  // // camera follow player 
+  this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
+  this.cameras.main.startFollow(this.player);
+
+  this.walllayer.setCollisionByExclusion(-1, true)
+  this.decolayer.setCollisionByExclusion(-1, true)
+
+
+  this.physics.add.collider(this.player, this.walllayer);
+  this.physics.add.collider(this.player, this.decolayer);
+
+// //collect item and 它的位子 然后移除
+  //collect item item1_remove
+  this.co = this.physics.add.sprite(212,587,"co").play("co").setScale(0.3);
+  //overlap_item1
+  this.physics.add.overlap(this.player, this.co, this.collectco, null, this);
+
+    //scoreText
+    this.coScore = this.add.text(52, 180, window.co + ' Chest Collected ', { 
+      fontSize: '20px', 
+      fill: '000000', 
+      }).setScrollFactor(0);
+
+
+//   //collect item item2_remove
+//   this.item2 = this.physics.add.sprite(1204, 531, 'item2').play("item2"); 
+//   //overlap_item2
+//   this.physics.add.overlap(this.player, this.item2, this.collectitem2, null, this);
+  }
+
+  update() {
+
+    // go to world
+    
+    if (this.player.x > 443 && this.player.x < 459 && this.player.y > 148 && this.player.y < 178 ) {
+      this.world();
     }
-  
-    create() {
-      console.log("*** world scene");
-  
-      //Step 3 - Create the map from main
-      let map = this.make.tilemap({key:'cavec'}); //or var map 也可以，然后那个key的字，跟着你上面那个step1的world1，要一样的名字！因为是connect的！
-  
-      // Step 4 Load the game tiles
-      // 1st parameter is name in Tiled,
-      // 2nd parameter is key in Preload
 
-      let forest2 = map.addTilesetImage("forest2", "forest2");
-      let forest3 = map.addTilesetImage("forest3", "forest3");
-  
-      let tilesArray = [ forest1Tiles,forest2Tiles, forest3Tiles ] //这个是tilesArray是方便你不用下面一个个打出来，直接load完你全部的tileset）（看下一个step）
-  
-      // Step 5  Load in layers by layers (一层一层加layer，从最底层的layer a.k.a第一个layer开始load进来）
-      this.floorlayer = map.createLayer("groundlayer", tilesArray, 0, 0); //layer的名字要跟你在tilemap里面取的layer名字一样！，后面tilesArray就是你直接load你的tileset进来了）
-      this.walllayer = map.createLayer("walllayer", tilesArray, 0, 0);
-      this.decorationlayer = map.createLayer("decolayer", tilesArray, 0, 0);
+    if ( this.player.x > 212
+      && this.player.y > 564 && this.player.y < 587 ) {
+          this.win();
+}
 
-  
-      this.physics.world.bounds.width = this.groundLayer.width; //这个应该也是set你character不会跑出去一个地方的，but with layer？不是很确定
-      this.physics.world.bounds.height = this.groundLayer.height;
-  
-      // Object layers
-      var startPoint = map.findObject(
-        "Spawnlayer",
-        (obj) => obj.name === "startPoint"
-      );
-      // var endPoint = map.findObject(
-      //   "objectLayer",
-      //   (obj) => obj.name === "endPoint"
-      // );
-  
-      var start = map.findObject("Spawnlayer",(obj) => obj.name === "start");
-  
-      this.player = this.physics.add.sprite(start.x, start.y, 'up');
-  
-      this.player.setCollideWorldBounds(true); // don't go out of the this.map （set character不会跑出去map，true就是不会，改成false就会）
-  
-      // // create the arrow keys
-       this.cursors = this.input.keyboard.createCursorKeys();
-  
-      // // camera follow player （这个就是如果你的map size大过你的game size然后你在网站开出来的时候显示不完整个地图的时候你可以加这个，镜头会跟着你的character移动！）
-      this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
-      this.cameras.main.startFollow(this.player);
-  
-  
-  
-      this.TreesLayer.setCollisionByExclusion(-1, true) //（额，这个setCollisionByExclusion在你layer的好像是如果你加了的话，你的character就不会穿过这些东西，就会block它啦）
-      this.StoneLayer.setCollisionByExclusion(-1, true)
-  
-      this.physics.add.collider(this.player, this.walllayer); //这个，应该，也是跟上面一样set Collider的，but你应该是要加这个才可以真的不会撞到？所以应该是一起的
-      this.physics.add.collider(this.player, this.decolayer);
-    } 
-    /////////////////// end of create //////////////////////////////
-  
-    update() {
-
-      // check for world ////// numbers unknow
-        //   if ( this.player.x < 1255
-        //     && this.player.y > 368 && this.player.y < 431 ) {
-
-        //       this.world()
-        //     }
-
-      if (this.cursors.left.isDown) {
-        this.player.body.setVelocityX(-200);
-        this.player.anims.play("left", true); //（你那个红色那边的字要跟着你上面animation create那个key的名字一样噢）
+  if (this.cursors.left.isDown) {
+      this.player.body.setVelocityX(-200);
+      this.player.anims.play("left", true); 
       } 
       else if (this.cursors.right.isDown) {
-        this.player.body.setVelocityX(200);
-        this.player.anims.play("right", true);
+      this.player.body.setVelocityX(200);
+      this.player.anims.play("right", true);
       } 
       else if (this.cursors.up.isDown) {
-        this.player.body.setVelocityY(-200);
-        this.player.anims.play("up", true);
-        //console.log('up');
+      this.player.body.setVelocityY(-200);
+      this.player.anims.play("up", true);
+      //console.log('up');
       } 
       else if (this.cursors.down.isDown) {
-        this.player.body.setVelocityY(200);
-        this.player.anims.play("down", true);
-        //console.log('down');
+      this.player.body.setVelocityY(200);
+      this.player.anims.play("down", true);
+      //console.log('down');
       } 
       else {
-        this.player.anims.stop(); //这个就是比如你move你character然后停下来，它就停在那个地方那个角度瓜）
-        this.player.body.setVelocity(0, 0);
+      this.player.anims.stop(); 
+      this.player.body.setVelocity(0, 0);
       }
-    } /////////////////// end of update //////////////////////////////
+    }
+
+          // Function to jump to win
+          win(player, tile) {
+            console.log("win function");
+            this.scene.start("win");
+     }
+
+   
+
+  //  collectco(player,co)
+  //       {
+  //         console.log("collectco");
+  //       co.disableBody(true,true);
+  //       this.collectsound.play();
+  //       }
+
   
-    // Function to jump to world
-      // world(player, tile) {
-      //   console.log("worldfunction");
+
+          //Function to jump to worldmap
+
+          world(player, tile) {
+            console.log("world function");
+            let playerPos = {};
+            playerPos.x = 2160;
+            playerPos.y = 1520;
+            playerPos.dir = "down";
+        
+            this.scene.start("world", { playerPos: playerPos });
+          }
+        
+        
+        collectco (player, co){
+          console.log("collectco");
+          co.disableBody(true,true);
+          this.collectsound.play();
+
+          window.co = window.co + 1;
+          console.log("chest collected", window.co);
+  
+          this.coScore.setText(  window.co + ' chest collected ');
+  
+          // window.co = window.co + 1;
+          // console.log("/5 ", window.co);
+  
+          // this.pumpkinScore.setText(  window.co + '/5 ');
+  
+      }
+    
+
+
+      // // // Function to jump to library
+      // map4(player, tile) {
+      //     console.log("map4 function");
+      //     this.scene.start("map4");
       // }
-      
-  } //////////// end of class world ////////////////////////
-  
+
+  // //collect item
+  //     collectitem(player,item1)
+  //     {
+  //     item1.disableBody(true,true);
+  //     this.collectsound.play();
+  //     }
+
+  //     collectitem2(player,item2)
+  //     {
+  //     item2.disableBody(true,true);
+  //     this.collectsound.play();
+  //     }
+
+    }
